@@ -130,10 +130,60 @@ public class ModelImpl implements Model{
 
     @Override
     public boolean isLampIllegal(int r, int c) {
-        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
+        Puzzle puzzle = getActivePuzzle();
+        if (r < 0 || c < 0 || r > puzzle.getWidth()|| c > puzzle.getHeight()) {
             throw new IndexOutOfBoundsException();
         }
-        return isLit(r, c);
+        boolean flag = false;
+        int rRight = r + 1;
+        while (rRight < puzzle.getWidth()) {
+            if (puzzle.getCellType(rRight, c) != CellType.WALL && puzzle.getCellType(rRight, c) != CellType.CLUE) {
+                if (isLamp(rRight, c)) {
+                    flag = true;
+                    break;
+                }
+            } else {
+                break;
+            }
+            rRight++;
+        }
+        int rLeft = r - 1;
+        while (rLeft >= 0) {
+            if (puzzle.getCellType(rLeft, c) != CellType.WALL && puzzle.getCellType(rLeft, c) != CellType.CLUE) {
+                if (isLamp(rLeft, c)) {
+                    flag = true;
+                    break;
+                }
+            } else {
+                break;
+            }
+            rLeft--;
+        }
+        int cUp = c + 1;
+        while (cUp < puzzle.getHeight()) {
+            if (puzzle.getCellType(r, cUp) != CellType.WALL && puzzle.getCellType(r, cUp) != CellType.CLUE) {
+                if (isLamp(r, cUp)) {
+                    flag = true;
+                    break;
+                }
+            } else {
+                break;
+            }
+            cUp++;
+        }
+        int cDown = c - 1;
+        while (cDown >= 0) {
+            if (puzzle.getCellType(r, cDown) != CellType.WALL && puzzle.getCellType(r, cDown) != CellType.CLUE) {
+                if (isLamp(r, cDown)) {
+                    flag = true;
+                    break;
+                }
+            } else {
+                break;
+            }
+            cDown--;
+        }
+        return flag;
     }
 
     @Override
