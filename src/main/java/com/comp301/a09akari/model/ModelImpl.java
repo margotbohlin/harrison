@@ -17,13 +17,13 @@ public class ModelImpl implements Model{
         this.i = 0;
         this.observers = new ArrayList<>();
         Puzzle puzzle = getActivePuzzle();
-        this.lampStorage = new int[puzzle.getWidth()][puzzle.getHeight()];
+        this.lampStorage = new int[puzzle.getHeight()][puzzle.getWidth()];
     }
 
     @Override
     public void addLamp(int r, int c) {
         Puzzle puzzle = getActivePuzzle();
-        if (r < 0 || c < 0 || r > puzzle.getWidth()|| c > puzzle.getHeight()) {
+        if (r < 0 || c < 0 || r >= puzzle.getHeight()|| c >= puzzle.getWidth()) {
             throw new IndexOutOfBoundsException();
         }
         CellType puzzleType = puzzle.getCellType(r, c);
@@ -40,7 +40,7 @@ public class ModelImpl implements Model{
     @Override
     public void removeLamp(int r, int c) {
         Puzzle puzzle = getActivePuzzle();
-       if (r < 0 || c < 0 || r > puzzle.getWidth()|| c > puzzle.getHeight()) {
+       if (r < 0 || c < 0 || r >= puzzle.getHeight()|| c >= puzzle.getWidth()) {
             throw new IndexOutOfBoundsException();
        }
        if (puzzle.getCellType(r, c) != CellType.CORRIDOR) {
@@ -56,7 +56,7 @@ public class ModelImpl implements Model{
     @Override
     public boolean isLit(int r, int c) {
         Puzzle puzzle = getActivePuzzle();
-        if (r < 0 || c < 0 || r > puzzle.getWidth()|| c > puzzle.getHeight()) {
+        if (r < 0 || c < 0 || r >= puzzle.getHeight()|| c >= puzzle.getWidth()) {
             throw new IndexOutOfBoundsException();
         }
         if (puzzle.getCellType(r, c) != CellType.CORRIDOR) {
@@ -64,7 +64,7 @@ public class ModelImpl implements Model{
         }
         boolean flag = false;
         int rRight = r + 1;
-        while (rRight < puzzle.getWidth()) {
+        while (rRight < puzzle.getHeight()) {
             if (puzzle.getCellType(rRight, c) != CellType.WALL && puzzle.getCellType(rRight, c) != CellType.CLUE) {
                 if (isLamp(rRight, c)) {
                     flag = true;
@@ -88,7 +88,7 @@ public class ModelImpl implements Model{
             rLeft--;
         }
         int cUp = c + 1;
-        while (cUp < puzzle.getHeight()) {
+        while (cUp < puzzle.getWidth()) {
             if (puzzle.getCellType(r, cUp) != CellType.WALL && puzzle.getCellType(r, cUp) != CellType.CLUE) {
                 if (isLamp(r, cUp)) {
                     flag = true;
@@ -117,7 +117,7 @@ public class ModelImpl implements Model{
     @Override
     public boolean isLamp(int r, int c) {
         Puzzle puzzle = getActivePuzzle();
-        if (r < 0 || c < 0 || r > puzzle.getWidth()|| c > puzzle.getHeight()) {
+        if (r < 0 || c < 0 || r >= puzzle.getHeight()|| c >= puzzle.getWidth()) {
             throw new IndexOutOfBoundsException();
         }
         if (library.getPuzzle(i).getCellType(r, c) != CellType.CORRIDOR) {
@@ -129,7 +129,7 @@ public class ModelImpl implements Model{
     @Override
     public boolean isLampIllegal(int r, int c) {
         Puzzle puzzle = getActivePuzzle();
-        if (r < 0 || c < 0 || r > puzzle.getWidth()|| c > puzzle.getHeight()) {
+        if (r < 0 || c < 0 || r >= puzzle.getHeight()|| c >= puzzle.getWidth()) {
             throw new IndexOutOfBoundsException();
         }
         if (puzzle.getCellType(r, c) != CellType.CORRIDOR) {
@@ -137,7 +137,7 @@ public class ModelImpl implements Model{
         }
         boolean flag = false;
         int rRight = r + 1;
-        while (rRight < puzzle.getWidth()) {
+        while (rRight < puzzle.getHeight()) {
             if (puzzle.getCellType(rRight, c) != CellType.WALL && puzzle.getCellType(rRight, c) != CellType.CLUE) {
                 if (isLamp(rRight, c)) {
                     flag = true;
@@ -161,7 +161,7 @@ public class ModelImpl implements Model{
             rLeft--;
         }
         int cUp = c + 1;
-        while (cUp < puzzle.getHeight()) {
+        while (cUp < puzzle.getWidth()) {
             if (puzzle.getCellType(r, cUp) != CellType.WALL && puzzle.getCellType(r, cUp) != CellType.CLUE) {
                 if (isLamp(r, cUp)) {
                     flag = true;
@@ -213,7 +213,7 @@ public class ModelImpl implements Model{
 
     @Override
     public void resetPuzzle() {
-        lampStorage = new int[getActivePuzzle().getWidth()][getActivePuzzle().getHeight()];
+        lampStorage = new int[getActivePuzzle().getHeight()][getActivePuzzle().getWidth()];
         for (ModelObserver o : observers) {
             o.update(this);
         }
@@ -239,7 +239,7 @@ public class ModelImpl implements Model{
     @Override
     public boolean isClueSatisfied(int r, int c) {
         Puzzle puzzle = getActivePuzzle();
-        if (r < 0 || c < 0 || r > puzzle.getWidth() || c > puzzle.getHeight()) {
+        if (r < 0 || c < 0 || r >= puzzle.getHeight() || c >= puzzle.getWidth()) {
             throw new IndexOutOfBoundsException();
         }
         CellType puzzleType = puzzle.getCellType(r, c);
@@ -249,7 +249,7 @@ public class ModelImpl implements Model{
         int clueAmount = puzzle.getClue(r, c);
         int lampCount = 0;
         //go right
-        if (r < puzzle.getWidth() - 1) {
+        if (r < puzzle.getHeight() - 1) {
             if (lampStorage[r + 1][c] == 1) { //checks right
                 lampCount++;
             }
@@ -259,7 +259,7 @@ public class ModelImpl implements Model{
                 lampCount++;
             }
         }
-        if (c < puzzle.getHeight() - 1) {
+        if (c < puzzle.getWidth() - 1) {
             if (lampStorage[r][c + 1] == 1) { //checks up
                 lampCount++;
             }

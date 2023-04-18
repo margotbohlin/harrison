@@ -16,7 +16,13 @@ public class AppTest {
   @Test
   public void shouldBeTrue(){
     int[][] puzzle1board = new int[][]{
-            {6},
+            {6, 6, 6, 6, 1, 6, 6},
+            {6, 6, 6, 5, 6, 6, 6},
+            {0, 6, 6, 6, 6, 6, 6},
+            {6, 5, 6, 6, 6, 4, 6},
+            {6, 6, 6, 6, 6, 6, 5},
+            {6, 6, 6, 2, 6, 6, 6},
+            {6, 6, 5, 6, 6, 6, 6},
     };
     Puzzle puzzle1 = new PuzzleImpl(puzzle1board);
     int[][] puzzle2board = new int[][]{
@@ -72,7 +78,16 @@ public class AppTest {
     puzzleLibrary.addPuzzle(puzzle4);
     puzzleLibrary.addPuzzle(puzzle5);
     Model model = new ModelImpl(puzzleLibrary);
-    model.addLamp(0,0);
+    model.addLamp(5, 2);
+    model.addLamp(5, 4);
+    model.addLamp(6, 3);
+    model.addLamp(4, 3);
+    model.addLamp(0, 3);
+    model.addLamp(6, 3);
+    model.addLamp(5, 2);
+    model.addLamp(6, 0);
+    model.addLamp(5, 5);
+    model.addLamp(1, 2);
     assertTrue(model.isSolved());
   }
 }
