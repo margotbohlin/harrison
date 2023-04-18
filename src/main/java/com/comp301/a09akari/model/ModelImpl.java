@@ -27,7 +27,7 @@ public class ModelImpl implements Model{
 
     @Override
     public void addLamp(int r, int c) {
-        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth() - 1 || c > library.getPuzzle(i).getHeight() - 1) {
+        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
         }
         if (!isLampIllegal(r, c)) {
@@ -66,7 +66,7 @@ public class ModelImpl implements Model{
 
     @Override
     public void removeLamp(int r, int c) {
-       if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth() - 1 || c > library.getPuzzle(i).getHeight() - 1) {
+       if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
        }
        if (library.getPuzzle(i).getCellType(r, c) != CellType.CORRIDOR) {
@@ -85,7 +85,7 @@ public class ModelImpl implements Model{
 
     @Override
     public boolean isLit(int r, int c) {
-        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth() - 1 || c > library.getPuzzle(i).getHeight() - 1) {
+        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth() || c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
         }
         if (library.getPuzzle(i).getCellType(r, c) != CellType.CORRIDOR) {
@@ -96,7 +96,7 @@ public class ModelImpl implements Model{
 
     @Override
     public boolean isLamp(int r, int c) {
-        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth() - 1 || c > library.getPuzzle(i).getHeight() - 1) {
+        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
         }
         if (library.getPuzzle(i).getCellType(r, c) == null) {
@@ -110,7 +110,7 @@ public class ModelImpl implements Model{
 
     @Override
     public boolean isLampIllegal(int r, int c) {
-        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth() - 1|| c > library.getPuzzle(i).getHeight() - 1) {
+        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
         }
         if (library.getPuzzle(i).getCellType(r, c) == null) {
