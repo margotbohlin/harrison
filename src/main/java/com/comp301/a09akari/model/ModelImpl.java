@@ -166,13 +166,13 @@ public class ModelImpl implements Model{
     @Override
     public boolean isSolved() {
         Puzzle puzzle = getActivePuzzle();
-        for (int k = 0; k < puzzle.getHeight(); k++) { //algorithm for checking the lit corridors
+        for (int k = 0; k < puzzle.getHeight(); k++) {
             for (int j = 0; j < puzzle.getWidth(); j++) {
                 if (puzzle.getCellType(k, j) == CellType.CORRIDOR && isLit(k, j)) {
                     return false;
                 } else if (puzzle.getCellType(k, j) == CellType.CLUE && !isClueSatisfied(k, j)) {
                     return false;
-                } else if (isLamp(k, j) && isLampIllegal(k, j)) {
+                } else if (puzzle.getCellType(k, j) == CellType.CORRIDOR && isLamp(k, j) && isLampIllegal(k, j)) {
                     return false;
                 }
             }
