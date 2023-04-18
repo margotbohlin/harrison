@@ -1,7 +1,5 @@
 package com.comp301.a09akari.view;
 
-import com.comp301.a09akari.controller.ControllerImpl;
-import com.comp301.a09akari.model.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -11,9 +9,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import javax.swing.text.View;
-
 public class AppLauncher extends Application {
+  public static void main(String[] args) {
+    launch();
+  }
+
   @Override
   public void start(Stage stage) {
     stage.setTitle("Play Akari");
@@ -92,9 +92,7 @@ public class AppLauncher extends Application {
     puzzleLibrary.addPuzzle(puzzle5);
     Model model = new ModelImpl(puzzleLibrary);
     ControllerImpl controller = new ControllerImpl(model);
-    */ // TODO: Create your Model, View, and Controller instances and launch your GUI
-  }
-  public static void main(String[] args) {
-    launch();
+    */
+    // TODO: Create your Model, View, and Controller instances and launch your GUI
   }
 }
