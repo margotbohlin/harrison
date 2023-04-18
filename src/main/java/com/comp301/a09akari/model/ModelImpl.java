@@ -99,7 +99,7 @@ public class ModelImpl implements Model{
             cUp++;
         }
         int cDown = c - 1;
-        while (rLeft >= 0) {
+        while (cDown >= 0) {
             if (puzzle.getCellType(r, cDown) != CellType.WALL && puzzle.getCellType(r, cDown) != CellType.CLUE) {
                 if (isLamp(r, cDown)) {
                     flag = false;
@@ -118,9 +118,6 @@ public class ModelImpl implements Model{
         if (r < 0 || c < 0 || r > puzzle.getWidth()|| c > puzzle.getHeight()) {
             throw new IndexOutOfBoundsException();
         }
-        if (puzzle.getCellType(r, c) == null) {
-            throw new NullPointerException();
-        }
         if (library.getPuzzle(i).getCellType(r, c) != CellType.CORRIDOR) {
             throw new IllegalArgumentException();
         }
@@ -132,11 +129,7 @@ public class ModelImpl implements Model{
         if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
         }
-        boolean flag = false;
-        if (this.isLamp(r + 1, c) || this.isLamp(r - 1, c) || this.isLamp(r, c + 1) || this.isLamp(r, c - 1)) {
-            flag = true;
-        }
-        return flag && this.isLit(r, c);
+        return isLit(r, c);
     }
 
     @Override
