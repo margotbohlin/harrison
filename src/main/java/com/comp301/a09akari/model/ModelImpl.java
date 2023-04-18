@@ -64,12 +64,13 @@ public class ModelImpl implements Model{
         if (puzzle.getCellType(r, c) != CellType.CORRIDOR) {
             throw new IllegalArgumentException();
         }
-        boolean flag = true;
+        boolean flag = false;
         int rRight = r + 1;
         while (rRight < puzzle.getWidth()) {
             if (puzzle.getCellType(rRight, c) != CellType.WALL && puzzle.getCellType(rRight, c) != CellType.CLUE) {
                 if (isLamp(rRight, c)) {
-                    flag = false;
+                    flag = true;
+                    break;
                 }
             } else {
                 break;
@@ -80,7 +81,8 @@ public class ModelImpl implements Model{
         while (rLeft >= 0) {
             if (puzzle.getCellType(rLeft, c) != CellType.WALL && puzzle.getCellType(rLeft, c) != CellType.CLUE) {
                 if (isLamp(rLeft, c)) {
-                    flag = false;
+                    flag = true;
+                    break;
                 }
             } else {
                 break;
@@ -91,7 +93,8 @@ public class ModelImpl implements Model{
         while (cUp < puzzle.getHeight()) {
             if (puzzle.getCellType(r, cUp) != CellType.WALL && puzzle.getCellType(r, cUp) != CellType.CLUE) {
                 if (isLamp(r, cUp)) {
-                    flag = false;
+                    flag = true;
+                    break;
                 }
             } else {
                 break;
@@ -102,7 +105,8 @@ public class ModelImpl implements Model{
         while (cDown >= 0) {
             if (puzzle.getCellType(r, cDown) != CellType.WALL && puzzle.getCellType(r, cDown) != CellType.CLUE) {
                 if (isLamp(r, cDown)) {
-                    flag = false;
+                    flag = true;
+                    break;
                 }
             } else {
                 break;
@@ -215,7 +219,6 @@ public class ModelImpl implements Model{
         if (puzzleType != CellType.CLUE) {
             throw new IllegalArgumentException();
         }
-
         int clueAmount = library.getPuzzle(i).getClue(r, c);
         int lampCount = 0;
         if (r < library.getPuzzle(i).getWidth()) {
