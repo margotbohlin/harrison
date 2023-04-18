@@ -5,3 +5,6 @@
  * JavaFX start() method:
  *   scene.getStylesheets().add("main.css");
  */
+ .layout {
+    -fx-background-color: #
+ }
