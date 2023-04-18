@@ -224,7 +224,7 @@ public class ModelImpl implements Model{
         Puzzle puzzle = getActivePuzzle();
         for (int k = 0; k < puzzle.getHeight(); k++) {
             for (int j = 0; j < puzzle.getWidth(); j++) {
-                if (puzzle.getCellType(k, j) == CellType.CORRIDOR && isLit(k, j)) {
+                if (puzzle.getCellType(k, j) == CellType.CORRIDOR && !isLit(k, j)) {
                     return false;
                 } else if (puzzle.getCellType(k, j) == CellType.CLUE && !isClueSatisfied(k, j)) {
                     return false;
