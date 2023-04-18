@@ -27,8 +27,11 @@ public class ModelImpl implements Model{
 
     @Override
     public void addLamp(int r, int c) {
-        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth() || c > library.getPuzzle(i).getHeight()) {
+        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth() - 1 || c > library.getPuzzle(i).getHeight() - 1) {
             throw new IndexOutOfBoundsException();
+        }
+        if (library.getPuzzle(i).getCellType(r, c) == null) {
+            throw new NullPointerException();
         }
         CellType puzzleType = library.getPuzzle(i).getCellType(r, c);
         if (puzzleType != CellType.CORRIDOR) {
