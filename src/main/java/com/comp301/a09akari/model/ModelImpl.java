@@ -167,9 +167,10 @@ public class ModelImpl implements Model{
 
     @Override
     public boolean isSolved() {
+        Puzzle puzzle = getActivePuzzle();
         int totalSpots = 0;
         litSpots = 0;
-        for (int k = 0; k < library.getPuzzle(i).getWidth(); k++) { //algorithm for checking the lit corridors
+        for (int k = 0; k < puzzle.getWidth(); k++) { //algorithm for checking the lit corridors
             for (int j = 0; j < library.getPuzzle(i).getHeight(); j++) {
                 if (library.getPuzzle(i).getCellType(k, j) == CellType.CORRIDOR) {
                     totalSpots++;
@@ -179,7 +180,7 @@ public class ModelImpl implements Model{
                 }
             }
         }
-        for (int k = 0; k < library.getPuzzle(i).getWidth(); k++) { //algorithm that checks none of the lamps are illegal
+        for (int k = 0; k < puzzle.getWidth(); k++) { //algorithm that checks none of the lamps are illegal
             for (int j = 0; j < library.getPuzzle(i).getHeight(); j++) {
                 if (isLamp(k, j)) {
                     if (this.isLampIllegal(k, j)) {
@@ -189,7 +190,7 @@ public class ModelImpl implements Model{
                 }
             }
         }
-        for (int k = 0; k < library.getPuzzle(i).getWidth(); k++) { //algorithm for checking if each clue is satisfied
+        for (int k = 0; k < puzzle.getWidth(); k++) { //algorithm for checking if each clue is satisfied
             for (int j = 0; j < library.getPuzzle(i).getHeight(); j++) {
                 if (library.getPuzzle(i).getCellType(k, j) == CellType.CLUE) {
                     if (!this.isClueSatisfied(k, j)) {
@@ -209,16 +210,18 @@ public class ModelImpl implements Model{
 
     @Override
     public boolean isClueSatisfied(int r, int c) {
-        if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth() || c > library.getPuzzle(i).getHeight()) {
+        Puzzle puzzle = getActivePuzzle();
+        if (r < 0 || c < 0 || r > puzzle.getWidth() || c > puzzle.getHeight()) {
             throw new IndexOutOfBoundsException();
         }
-        CellType puzzleType = library.getPuzzle(i).getCellType(r, c);
+        CellType puzzleType = puzzle.getCellType(r, c);
         if (puzzleType != CellType.CLUE) {
             throw new IllegalArgumentException();
         }
-        int clueAmount = library.getPuzzle(i).getClue(r, c);
+        int clueAmount = puzzle.getClue(r, c);
         int lampCount = 0;
-        if (r < library.getPuzzle(i).getWidth()) {
+        //go right
+        if (r < puzzle.getWidth() - 1) {
             if (lampStorage[r + 1][c] == 1) { //checks right
                 lampCount++;
             }
@@ -228,13 +231,13 @@ public class ModelImpl implements Model{
                 lampCount++;
             }
         }
-        if (c < library.getPuzzle(i).getHeight()) {
-            if (lampStorage[r][c - 1] == 1) { //checks up
+        if (c < puzzle.getHeight() - 1) {
+            if (lampStorage[r][c + 1] == 1) { //checks up
                 lampCount++;
             }
         }
         if (c > 0) {
-            if (lampStorage[r][c + 1] == 1) { //checks down
+            if (lampStorage[r][c - 1] == 1) { //checks down
                 lampCount++;
             }
         }
