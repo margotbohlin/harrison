@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModelImpl implements Model{
-    private PuzzleLibrary library;
+    private final PuzzleLibrary library;
     private List<int[][]> lampStorage; //0 means no lamp, 1 means lamp and lit, 2 means no lamp but lit
     private int i;
     private boolean[] solved;
