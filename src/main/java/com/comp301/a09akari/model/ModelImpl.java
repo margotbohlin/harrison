@@ -8,7 +8,6 @@ public class ModelImpl implements Model{
     private int[][] lampStorage; //0 means no lamp, 1 means lamp and lit
     private int i;
     private final List<ModelObserver> observers;
-    private int litSpots;
 
     public ModelImpl(PuzzleLibrary library) {
         if (library == null) {
@@ -17,7 +16,6 @@ public class ModelImpl implements Model{
         this.library = library;
         this.i = 0;
         this.observers = new ArrayList<>();
-        this.litSpots = 0;
         Puzzle puzzle = getActivePuzzle();
         this.lampStorage = new int[puzzle.getWidth()][puzzle.getHeight()];
     }
@@ -168,46 +166,18 @@ public class ModelImpl implements Model{
     @Override
     public boolean isSolved() {
         Puzzle puzzle = getActivePuzzle();
-        int totalSpots = 0;
-        litSpots = 0;
         for (int k = 0; k < puzzle.getHeight(); k++) { //algorithm for checking the lit corridors
             for (int j = 0; j < puzzle.getWidth(); j++) {
-                if (puzzle.getCellType(k, j) == CellType.CORRIDOR) {
-                    totalSpots++;
-                    if (this.isLit(k, j)) {
-                        litSpots++;
-                    }
+                if (puzzle.getCellType(k, j) == CellType.CORRIDOR && isLit(k, j)) {
+                    return false;
+                } else if (puzzle.getCellType(k, j) == CellType.CLUE && !isClueSatisfied(k, j)) {
+                    return false;
+                } else if (isLamp(k, j) && isLampIllegal(k, j)) {
+                    return false;
                 }
             }
         }
-        for (int k = 0; k < puzzle.getHeight(); k++) { //algorithm that checks none of the lamps are illegal
-            for (int j = 0; j < puzzle.getWidth(); j++) {
-                if (puzzle.getCellType(k, j) == CellType.CORRIDOR) {
-                    if (isLamp(k, j)) {
-                        if (isLampIllegal(k, j)) {
-                            litSpots = 0;
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        for (int k = 0; k < puzzle.getHeight(); k++) { //algorithm for checking if each clue is satisfied
-            for (int j = 0; j < puzzle.getWidth(); j++) {
-                if (library.getPuzzle(i).getCellType(k, j) == CellType.CLUE) {
-                    if (!isClueSatisfied(k, j)) {
-                        litSpots = 0;
-                        return false;
-                    }
-                }
-            }
-        }
-        if (litSpots == totalSpots) {
-            litSpots = 0;
-            return true;
-        }
-        litSpots = 0;
-        return false;
+        return true;
     }
 
     @Override
