@@ -116,7 +116,10 @@ public class ModelImpl implements Model{
         if (library.getPuzzle(i).getCellType(r, c) == null) {
             throw new NullPointerException();
         }
-        return this.isLamp(r, c) || this.isLit(r, c);
+        if (this.isLamp(r + 1, c) || this.isLamp(r - 1, c) || this.isLamp(r, c + 1) || this.isLamp(r, c - 1)) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -172,7 +175,7 @@ public class ModelImpl implements Model{
             for (int j = 0; j < library.getPuzzle(i).getHeight(); j++) {
                 if (library.getPuzzle(i).getCellType(k, j) == CellType.CORRIDOR) {
                     totalSpots++;
-                    if (this.isLit(j, k)) {
+                    if (this.isLit(k, j)) {
                         litSpots++;
                     }
                 }
@@ -180,11 +183,10 @@ public class ModelImpl implements Model{
         }
         for (int k = 0; k < library.getPuzzle(i).getWidth(); k++) { //algorithm that checks none of the lamps are illegal
             for (int j = 0; j < library.getPuzzle(i).getHeight(); j++) {
-                if (library.getPuzzle(i).getCellType(k, j) == CellType.CORRIDOR) {
-                    if (lampStorage.get(i)[k][j] == 1) {
-                        if (this.isLampIllegal(k, j)) {
-                            return false;
-                        }
+                if (this.lampStorage.get(i)[k][j] == 1) {
+                    if (this.isLampIllegal(k, j)) {
+                        litSpots = 0;
+                        return false;
                     }
                 }
             }
@@ -193,6 +195,7 @@ public class ModelImpl implements Model{
             for (int j = 0; j < library.getPuzzle(i).getHeight(); j++) {
                 if (library.getPuzzle(i).getCellType(k, j) == CellType.CLUE) {
                     if (!this.isClueSatisfied(k, j)) {
+                        litSpots = 0;
                         return false;
                     }
                 }
@@ -203,6 +206,7 @@ public class ModelImpl implements Model{
             litSpots = 0;
             return true;
         }
+        litSpots = 0;
         return false;
     }
 
