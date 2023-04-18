@@ -13,9 +13,6 @@ public class PuzzleImpl implements Puzzle{
 
     @Override
     public int getHeight() {
-        if (board.length == 0) {
-            return 0;
-        }
         return board[0].length;
     }
 
