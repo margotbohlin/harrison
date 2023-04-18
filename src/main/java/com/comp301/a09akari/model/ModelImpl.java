@@ -64,8 +64,52 @@ public class ModelImpl implements Model{
         if (puzzle.getCellType(r, c) != CellType.CORRIDOR) {
             throw new IllegalArgumentException();
         }
-        boolean flag = false;
-        return this.isLamp(r, c) || lampStorage[r][c] == 2;
+        boolean flag = true;
+        int rRight = r + 1;
+        while (rRight < puzzle.getWidth()) {
+            if (puzzle.getCellType(rRight, c) != CellType.WALL && puzzle.getCellType(rRight, c) != CellType.CLUE) {
+                if (isLamp(rRight, c)) {
+                    flag = false;
+                }
+            } else {
+                break;
+            }
+            rRight++;
+        }
+        int rLeft = r - 1;
+        while (rLeft >= 0) {
+            if (puzzle.getCellType(rLeft, c) != CellType.WALL && puzzle.getCellType(rLeft, c) != CellType.CLUE) {
+                if (isLamp(rLeft, c)) {
+                    flag = false;
+                }
+            } else {
+                break;
+            }
+            rLeft--;
+        }
+        int cUp = c + 1;
+        while (cUp < puzzle.getHeight()) {
+            if (puzzle.getCellType(r, cUp) != CellType.WALL && puzzle.getCellType(r, cUp) != CellType.CLUE) {
+                if (isLamp(r, cUp)) {
+                    flag = false;
+                }
+            } else {
+                break;
+            }
+            cUp++;
+        }
+        int cDown = c - 1;
+        while (rLeft >= 0) {
+            if (puzzle.getCellType(r, cDown) != CellType.WALL && puzzle.getCellType(r, cDown) != CellType.CLUE) {
+                if (isLamp(r, cDown)) {
+                    flag = false;
+                }
+            } else {
+                break;
+            }
+            cDown--;
+        }
+        return this.isLamp(r, c) || flag;
     }
 
     @Override
@@ -88,10 +132,11 @@ public class ModelImpl implements Model{
         if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
         }
+        boolean flag = false;
         if (this.isLamp(r + 1, c) || this.isLamp(r - 1, c) || this.isLamp(r, c + 1) || this.isLamp(r, c - 1)) {
-            return true;
+            flag = true;
         }
-        return false;
+        return flag && this.isLit(r, c);
     }
 
     @Override
@@ -110,9 +155,7 @@ public class ModelImpl implements Model{
             throw new IndexOutOfBoundsException();
         }
         i = index;
-        for (ModelObserver o : observers) {
-            o.update(this);
-        }
+        resetPuzzle();
     }
 
     @Override
