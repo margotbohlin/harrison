@@ -170,8 +170,8 @@ public class ModelImpl implements Model{
         Puzzle puzzle = getActivePuzzle();
         int totalSpots = 0;
         litSpots = 0;
-        for (int k = 0; k < puzzle.getWidth(); k++) { //algorithm for checking the lit corridors
-            for (int j = 0; j < puzzle.getHeight(); j++) {
+        for (int k = 0; k < puzzle.getHeight(); k++) { //algorithm for checking the lit corridors
+            for (int j = 0; j < puzzle.getWidth(); j++) {
                 if (puzzle.getCellType(k, j) == CellType.CORRIDOR) {
                     totalSpots++;
                     if (this.isLit(k, j)) {
@@ -180,8 +180,8 @@ public class ModelImpl implements Model{
                 }
             }
         }
-        for (int k = 0; k < puzzle.getWidth(); k++) { //algorithm that checks none of the lamps are illegal
-            for (int j = 0; j < puzzle.getHeight(); j++) {
+        for (int k = 0; k < puzzle.getHeight(); k++) { //algorithm that checks none of the lamps are illegal
+            for (int j = 0; j < puzzle.getWidth(); j++) {
                 if (puzzle.getCellType(k, j) == CellType.CORRIDOR) {
                     if (isLamp(k, j)) {
                         if (isLampIllegal(k, j)) {
@@ -192,8 +192,8 @@ public class ModelImpl implements Model{
                 }
             }
         }
-        for (int k = 0; k < puzzle.getWidth(); k++) { //algorithm for checking if each clue is satisfied
-            for (int j = 0; j < puzzle.getHeight(); j++) {
+        for (int k = 0; k < puzzle.getHeight(); k++) { //algorithm for checking if each clue is satisfied
+            for (int j = 0; j < puzzle.getWidth(); j++) {
                 if (library.getPuzzle(i).getCellType(k, j) == CellType.CLUE) {
                     if (!isClueSatisfied(k, j)) {
                         litSpots = 0;
