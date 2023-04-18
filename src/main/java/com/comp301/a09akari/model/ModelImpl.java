@@ -30,38 +30,16 @@ public class ModelImpl implements Model{
         if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
         }
-            CellType puzzleType = library.getPuzzle(i).getCellType(r, c);
-            if (puzzleType != CellType.CORRIDOR) {
-                throw new IllegalArgumentException();
+        CellType puzzleType = library.getPuzzle(i).getCellType(r, c);
+        if (puzzleType != CellType.CORRIDOR) {
+            throw new IllegalArgumentException();
+        }
+        if (!isLamp(r, c)) {
+            lampStorage[r][c] = 1;
+            for (ModelObserver o : observers) {
+                o.update(this);
             }
-            if (!isLamp(r, c)) {
-                lampStorage[r][c] = 1;
-                for (ModelObserver o : observers) {
-                    o.update(this);
-                }
-            }
-            /*int rStorage = r;
-            int cStorage = c;
-            r = r + 1;
-            while(library.getPuzzle(i).getCellType(r, c) == CellType.CORRIDOR) { //lights up the row of lamp
-                lampStorage.get(i)[r][c] = 2;
-                r = r + 1;
-            }
-            c = c + 1;
-            while (library.getPuzzle(i).getCellType(r, c) == CellType.CORRIDOR) { //lights up the column of lamp
-                lampStorage.get(i)[r][c] = 2;
-                c = c + 1;
-            }
-            r = rStorage - 1;
-            while(library.getPuzzle(i).getCellType(r, c) == CellType.CORRIDOR) { //lights up the row of lamp
-                lampStorage.get(i)[r][c] = 2;
-                r = r - 1;
-            }
-            c = cStorage - 1;
-            while (library.getPuzzle(i).getCellType(r, c) == CellType.CORRIDOR) { //lights up the column of lamp
-                lampStorage.get(i)[r][c] = 2;
-                c = c - 1;
-            }*/
+        }
     }
 
     @Override
@@ -72,9 +50,7 @@ public class ModelImpl implements Model{
        if (library.getPuzzle(i).getCellType(r, c) != CellType.CORRIDOR) {
             throw new IllegalArgumentException();
        }
-        if (library.getPuzzle(i).getCellType(r, c) == null) {
-            throw new NullPointerException();
-        }
+
        if (isLamp(r, c)) {
            lampStorage[r][c] = 0;
            for (ModelObserver o : observers) {
@@ -113,9 +89,6 @@ public class ModelImpl implements Model{
         if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
         }
-        if (library.getPuzzle(i).getCellType(r, c) == null) {
-            throw new NullPointerException();
-        }
         if (this.isLamp(r + 1, c) || this.isLamp(r - 1, c) || this.isLamp(r, c + 1) || this.isLamp(r, c - 1)) {
             return true;
         }
@@ -150,15 +123,7 @@ public class ModelImpl implements Model{
 
     @Override
     public void resetPuzzle() {
-        for (int k = 0; k < library.getPuzzle(i).getWidth(); k++) {
-            for (int j = 0; j < library.getPuzzle(i).getHeight(); j++) {
-                if (library.getPuzzle(i).getCellType(k, j) == CellType.CORRIDOR) {
-                    if (this.isLamp(k, j)) {
-                        lampStorage[k][j] = 0;
-                    }
-                }
-            }
-        }
+        lampStorage = new int[getActivePuzzle().getWidth()][getActivePuzzle().getHeight()];
         for (ModelObserver o : observers) {
             o.update(this);
         }
