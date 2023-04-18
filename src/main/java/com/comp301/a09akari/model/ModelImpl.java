@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ModelImpl implements Model{
     private final PuzzleLibrary library;
-    private List<int[][]> lampStorage; //0 means no lamp, 1 means lamp and lit, 2 means no lamp but lit
+    private int[][] lampStorage; //0 means no lamp, 1 means lamp and lit, 2 means no lamp but lit
     private int i;
     private boolean[] solved;
     private List<ModelObserver> observers;
@@ -30,13 +30,17 @@ public class ModelImpl implements Model{
         if (r < 0 || c < 0 || r > library.getPuzzle(i).getWidth()|| c > library.getPuzzle(i).getHeight()) {
             throw new IndexOutOfBoundsException();
         }
-        if (!isLampIllegal(r, c)) {
             CellType puzzleType = library.getPuzzle(i).getCellType(r, c);
             if (puzzleType != CellType.CORRIDOR) {
                 throw new IllegalArgumentException();
             }
-            lampStorage.get(i)[r][c] = 1;
-            int rStorage = r;
+            if (!isLamp(r, c)) {
+                lampStorage[r][c] = 1;
+                for (ModelObserver o : observers) {
+                    o.update(this);
+                }
+            }
+            /*int rStorage = r;
             int cStorage = c;
             r = r + 1;
             while(library.getPuzzle(i).getCellType(r, c) == CellType.CORRIDOR) { //lights up the row of lamp
@@ -57,11 +61,7 @@ public class ModelImpl implements Model{
             while (library.getPuzzle(i).getCellType(r, c) == CellType.CORRIDOR) { //lights up the column of lamp
                 lampStorage.get(i)[r][c] = 2;
                 c = c - 1;
-            }
-        }
-        for (ModelObserver o : observers) {
-            o.update(this);
-        }
+            }*/
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ModelImpl implements Model{
             throw new NullPointerException();
         }
        if (isLamp(r, c)) {
-           lampStorage.get(i)[r][c] = 0;
+           lampStorage[r][c] = 0;
            for (ModelObserver o : observers) {
                o.update(this);
            }
@@ -91,7 +91,7 @@ public class ModelImpl implements Model{
         if (library.getPuzzle(i).getCellType(r, c) != CellType.CORRIDOR) {
             throw new IllegalArgumentException();
         }
-        return this.isLamp(r, c) || lampStorage.get(i)[r][c] == 2;
+        return this.isLamp(r, c) || lampStorage[r][c] == 2;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ModelImpl implements Model{
         if (library.getPuzzle(i).getCellType(r, c) != CellType.CORRIDOR) {
             throw new IllegalArgumentException();
         }
-        return lampStorage.get(i)[r][c] == 1;
+        return lampStorage[r][c] == 1;
     }
 
     @Override
@@ -154,7 +154,7 @@ public class ModelImpl implements Model{
             for (int j = 0; j < library.getPuzzle(i).getHeight(); j++) {
                 if (library.getPuzzle(i).getCellType(k, j) == CellType.CORRIDOR) {
                     if (this.isLamp(k, j)) {
-                        lampStorage.get(i)[k][j] = 0;
+                        lampStorage[k][j] = 0;
                     }
                 }
             }
@@ -183,7 +183,7 @@ public class ModelImpl implements Model{
         }
         for (int k = 0; k < library.getPuzzle(i).getWidth(); k++) { //algorithm that checks none of the lamps are illegal
             for (int j = 0; j < library.getPuzzle(i).getHeight(); j++) {
-                if (this.lampStorage.get(i)[k][j] == 1) {
+                if (isLamp(k, j)) {
                     if (this.isLampIllegal(k, j)) {
                         litSpots = 0;
                         return false;
@@ -223,22 +223,22 @@ public class ModelImpl implements Model{
         int clueAmount = library.getPuzzle(i).getClue(r, c);
         int lampCount = 0;
         if (r < library.getPuzzle(i).getWidth()) {
-            if (lampStorage.get(i)[r + 1][c] == 1) { //checks right
+            if (lampStorage[r + 1][c] == 1) { //checks right
                 lampCount++;
             }
         }
         if (r > 0) {
-            if (lampStorage.get(i)[r - 1][c] == 1) { //checks left
+            if (lampStorage[r - 1][c] == 1) { //checks left
                 lampCount++;
             }
         }
         if (c < library.getPuzzle(i).getHeight()) {
-            if (lampStorage.get(i)[r][c - 1] == 1) { //checks up
+            if (lampStorage[r][c - 1] == 1) { //checks up
                 lampCount++;
             }
         }
         if (c > 0) {
-            if (lampStorage.get(i)[r][c + 1] == 1) { //checks down
+            if (lampStorage[r][c + 1] == 1) { //checks down
                 lampCount++;
             }
         }
