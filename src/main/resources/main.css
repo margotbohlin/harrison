@@ -5,6 +5,22 @@
  * JavaFX start() method:
  *   scene.getStylesheets().add("main.css");
  */
- .layout {
-    -fx-background-color: #
+.button-layout {
+    -fx-background-color: #fffaf0;
+    -fx-font-family: Arial, sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 10px;
  }
+
+.board {
+
+}
+
+.message-layout {
+
+}
+
+.view {
+
+}

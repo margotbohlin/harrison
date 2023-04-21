@@ -1,5 +1,6 @@
 package com.comp301.a09akari.controller;
 
+import com.comp301.a09akari.model.CellType;
 import com.comp301.a09akari.model.Model;
 
 import java.util.ArrayList;
@@ -35,13 +36,16 @@ public class ControllerImpl implements ClassicMvcController {
 
   @Override
   public void clickRandPuzzle() {
-    List<Integer> indexList = new ArrayList<Integer>();
+    List<Integer> indexList = new ArrayList<>();
     for (int i = 0; i < this.model.getPuzzleLibrarySize(); i++) {
       indexList.add(i);
     }
     Random rand = new Random();
     int index = rand.nextInt(indexList.size());
     int randomInt = indexList.get(index);
+    while (randomInt == model.getActivePuzzleIndex()) {
+        randomInt = indexList.get(rand.nextInt(indexList.size()));
+    }
     this.model.setActivePuzzleIndex(randomInt);
   }
 
@@ -52,6 +56,12 @@ public class ControllerImpl implements ClassicMvcController {
 
   @Override
   public void clickCell(int r, int c) {
-    this.model.addLamp(r, c);
+      if (model.getActivePuzzle().getCellType(r, c) == CellType.CORRIDOR) {
+          if (model.isLamp(r, c)) {
+              this.model.removeLamp(r, c);
+          } else {
+              this.model.addLamp(r, c);
+          }
+      }
   }
 }
