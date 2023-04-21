@@ -52,7 +52,7 @@ public class PuzzleView implements FXComponent {
             if (controller.isLampIllegal(r, c)) {
               imageView.setImage(
                   new Image(
-                      "https://imagelive.scentsy.com/cmsimages/products/accessorybulb20wattredrafw21.png"));
+                      "https://www.incandescentwaxmelts.com/wp-content/uploads/SCENTSY-25W-RED-LIGHT-BULB.png"));
             } else {
               imageView.setImage(
                   new Image("https://cdn-icons-png.flaticon.com/512/2988/2988036.png"));
