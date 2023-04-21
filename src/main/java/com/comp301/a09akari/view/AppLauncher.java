@@ -2,25 +2,18 @@ package com.comp301.a09akari.view;
 
 import com.comp301.a09akari.controller.AltControllerImpl;
 import com.comp301.a09akari.controller.AlternateMvcController;
-import com.comp301.a09akari.controller.ClassicMvcController;
-import com.comp301.a09akari.controller.ControllerImpl;
 import com.comp301.a09akari.model.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AppLauncher extends Application {
   public static void main(String[] args) {
     launch();
   }
+
   @Override
   public void start(Stage stage) {
     List<Puzzle> puzzles = PuzzleLibraryView.create();
@@ -37,10 +30,11 @@ public class AppLauncher extends Application {
     stage.setScene(scene);
 
     // Refresh view when model changes
-    model.addObserver((Model m) -> {
-      scene.setRoot(view.render());
-      stage.sizeToScene();
-    });
+    model.addObserver(
+        (Model m) -> {
+          scene.setRoot(view.render());
+          stage.sizeToScene();
+        });
 
     // Show the stage
     stage.setTitle("Play Akari");

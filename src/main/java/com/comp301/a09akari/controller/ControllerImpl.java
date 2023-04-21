@@ -44,7 +44,7 @@ public class ControllerImpl implements ClassicMvcController {
     int index = rand.nextInt(indexList.size());
     int randomInt = indexList.get(index);
     while (randomInt == model.getActivePuzzleIndex()) {
-        randomInt = indexList.get(rand.nextInt(indexList.size()));
+      randomInt = indexList.get(rand.nextInt(indexList.size()));
     }
     this.model.setActivePuzzleIndex(randomInt);
   }
@@ -56,12 +56,12 @@ public class ControllerImpl implements ClassicMvcController {
 
   @Override
   public void clickCell(int r, int c) {
-      if (model.getActivePuzzle().getCellType(r, c) == CellType.CORRIDOR) {
-          if (model.isLamp(r, c)) {
-              this.model.removeLamp(r, c);
-          } else {
-              this.model.addLamp(r, c);
-          }
+    if (model.getActivePuzzle().getCellType(r, c) == CellType.CORRIDOR) {
+      if (model.isLamp(r, c)) {
+        this.model.removeLamp(r, c);
+      } else {
+        this.model.addLamp(r, c);
       }
+    }
   }
 }

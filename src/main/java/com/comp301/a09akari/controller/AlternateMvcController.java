@@ -1,6 +1,5 @@
 package com.comp301.a09akari.controller;
 
-import com.comp301.a09akari.model.Model;
 import com.comp301.a09akari.model.Puzzle;
 
 public interface AlternateMvcController {
@@ -35,8 +34,12 @@ public interface AlternateMvcController {
   Puzzle getActivePuzzle();
 
   int getActivePuzzleIndex();
+
   int getPuzzleLibrarySize();
+
   void addLamp(int r, int c);
+
   void removeLamp(int r, int c);
+
   boolean isLampIllegal(int r, int c);
 }

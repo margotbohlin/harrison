@@ -1,10 +1,8 @@
 package com.comp301.a09akari;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import com.comp301.a09akari.model.*;
 import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 /** Unit test for simple App. */
 public class AppTest {
@@ -13,5 +11,4 @@ public class AppTest {
   public void shouldAnswerWithTrue() {
     assertTrue(true);
   }
-
 }
